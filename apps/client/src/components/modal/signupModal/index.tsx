@@ -4,7 +4,7 @@ import Alert from "@mui/material/Alert";
 import CustomButton from "../../button";
 import InputField from "../../inputField";
 
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useMemo } from "react";
 
 const SignUpModal = () => {
   const [username, setUsername] = useState("");
@@ -32,10 +32,14 @@ const SignUpModal = () => {
 
     if (password !== confirmPassword) {
       setError("Passwords did not match");
-    }else {
+    } else {
       setError("");
     }
   };
+
+  const sxButton = useMemo(() => {
+    return { paddingX: 8, marginTop: 2 };
+  }, []);
 
   return (
     <Box component={"form"} mt={2} onSubmit={handleSubmit}>
@@ -81,11 +85,7 @@ const SignUpModal = () => {
       )}
 
       <Box display="flex" justifyContent="center">
-        <CustomButton
-          isSubmit
-          label="Sign up"
-          sx={{ paddingX: 8, marginTop: 2 }}
-        />
+        <CustomButton isSubmit label="Sign up" sx={sxButton} />
       </Box>
     </Box>
   );

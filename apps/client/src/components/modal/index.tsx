@@ -25,7 +25,7 @@ export default function AuthModal() {
     <Modal open={isOpen} onClose={onClose}>
       <Box sx={style}>
         <Box display="flex" justifyContent="flex-end">
-          <GrClose size={24} onClick={onClose} style={{cursor: "pointer"}} />
+          <GrClose size={20} onClick={onClose} style={{cursor: "pointer"}} />
         </Box>
         <Typography variant="h6" component="h2" textAlign="center">
           {type === "signin" ? "Sign In" : "Sign Up"}
