@@ -1,4 +1,4 @@
-import { IsString} from "class-validator";
+import { IsString, IsNumber } from "class-validator";
 
 export class UserCreateDto {
   @IsString()
@@ -20,5 +20,13 @@ export class UserFindDto {
 
 export class UserSignDto {
   @IsString()
-  username!: string
+  username!: string;
+}
+
+export class UserQueryDto extends UserFindDto {
+  @IsNumber()
+  page!: number;
+
+  @IsNumber()
+  limit!: number;
 }

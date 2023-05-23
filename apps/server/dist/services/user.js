@@ -24,7 +24,10 @@ class UserService {
             if ((0, lodash_1.isEmpty)(userData)) {
                 throw new HttpException_1.HttpException(400, "Not enough data");
             }
-            const foundUserByUsername = yield user_1.User.findOne({ where: { username: userData.username } });
+            const foundUserByUsername = yield user_1.User.findOne({
+                where: { username: userData.username },
+                raw: true,
+            });
             if (!(0, lodash_1.isEmpty)(foundUserByUsername)) {
                 throw new HttpException_1.HttpException(409, "Username has existed");
             }
@@ -36,23 +39,27 @@ class UserService {
                 }, { transaction: trans });
                 yield newUser.save();
                 yield trans.commit();
-                return newUser;
+                return (0, lodash_1.omit)(newUser.toJSON(), "password");
             }
             catch (error) {
-                console.log("-----error", error);
                 yield trans.rollback();
                 throw new HttpException_1.HttpException(409, "Create user failed");
             }
         });
     }
-    findUserbyUserData(userData) {
+    findUserByUserData(userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const foundUser = yield user_1.User.findOne({ where: { username: userData.username, password: (0, hash_1.hashPassword)(userData.password) } });
+            const foundUser = yield user_1.User.findOne({
+                where: {
+                    username: userData.username,
+                    password: (0, hash_1.hashPassword)(userData.password),
+                },
+            });
             if ((0, lodash_1.isEmpty)(foundUser)) {
-                throw new HttpException_1.HttpException(409, "User not exits");
+                throw new HttpException_1.HttpException(404, "User not exits");
             }
             const body = {
-                username: foundUser === null || foundUser === void 0 ? void 0 : foundUser.getDataValue("username")
+                username: foundUser === null || foundUser === void 0 ? void 0 : foundUser.getDataValue("username"),
             };
             return body;
         });
@@ -61,15 +68,15 @@ class UserService {
         const jwtUser = jsonwebtoken_1.default.sign({ user: body }, process.env.SECRET_KEY);
         return jwtUser;
     }
-    findAllUser() {
+    findAllUser(queryParams) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userList = yield user_1.User.findAll({
-                attributes: [
-                    "username",
-                    "id",
-                    "email"
-                ]
-            });
+            const queryOptions = {
+                where: {},
+                attributes: ["username", "id", "email"],
+                limit: queryParams.limit || 10,
+                offset: (queryParams.page - 1) * queryParams.limit || 1,
+            };
+            const userList = yield user_1.User.findAll(queryOptions);
             return { userList };
         });
     }

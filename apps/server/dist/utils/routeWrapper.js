@@ -15,8 +15,8 @@ const routeWrapper = (cb) => (req, res, next) => __awaiter(void 0, void 0, void 
         const handlerResponse = yield cb(req, res, next);
         if (handlerResponse) {
             return res.status(200).json({
+                message: handlerResponse.message || "",
                 data: handlerResponse.data || {},
-                metadata: handlerResponse.metadata
             });
         }
         return res.status(200).json();

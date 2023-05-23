@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserSignDto = exports.UserFindDto = exports.UserCreateDto = void 0;
+exports.UserQueryDto = exports.UserSignDto = exports.UserFindDto = exports.UserCreateDto = void 0;
 const class_validator_1 = require("class-validator");
 class UserCreateDto {
 }
@@ -35,3 +35,12 @@ __decorate([
     (0, class_validator_1.IsString)()
 ], UserSignDto.prototype, "username", void 0);
 exports.UserSignDto = UserSignDto;
+class UserQueryDto extends UserFindDto {
+}
+__decorate([
+    (0, class_validator_1.IsNumber)()
+], UserQueryDto.prototype, "page", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)()
+], UserQueryDto.prototype, "limit", void 0);
+exports.UserQueryDto = UserQueryDto;

@@ -9,23 +9,22 @@ const express_2 = require("express");
 const cors_1 = __importDefault(require("cors"));
 const passport_1 = __importDefault(require("passport"));
 require("./middlewares/auth");
+const error_1 = __importDefault(require("./middlewares/error"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
-app.get('/test', (req, res) => {
-    res.send('Done!!!!!!!!!');
+app.get("/test", (req, res) => {
+    res.send("Done!!!!!!!!!");
 });
 app.use(express_2.Router);
-// app.listen(port, () => {
-//   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-// });
 class App {
     constructor(routes) {
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || 3000;
-        this.env = process.env.NODE_ENV || 'development';
+        this.env = process.env.NODE_ENV || "development";
         this.initializeMiddlewares();
         this.initializeRoutes(routes);
+        this.initializeErrorHandling();
     }
     listen() {
         return this.app.listen(this.port, () => {
@@ -42,8 +41,11 @@ class App {
         this.app.use(express_1.default.urlencoded({ extended: true }));
         this.app.use(passport_1.default.initialize());
     }
+    initializeErrorHandling() {
+        this.app.use(error_1.default);
+    }
     initializeRoutes(routes) {
-        routes.forEach(route => {
+        routes.forEach((route) => {
             this.app.use(route.path, route.router);
         });
     }
