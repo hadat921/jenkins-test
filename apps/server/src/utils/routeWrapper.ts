@@ -17,8 +17,9 @@ interface WrapperRequestHandler<
     | void
     | Promise<void>
     | {
-        data?: any;
         message?: any;
+        count?: any;
+        data?: any;
       }
     | Promise<{
         data?: any;
@@ -34,7 +35,7 @@ export const routeWrapper =
       if (handlerResponse) {
         return res.status(200).json({
           message: handlerResponse.message || "",
-          data: handlerResponse.data || {},
+          data: handlerResponse.data || [],
         });
       }
 
