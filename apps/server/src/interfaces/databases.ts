@@ -1,5 +1,5 @@
-import { Options } from 'sequelize'
+import { Options } from "sequelize";
 
 export interface IDatabaseConfig extends Options {
-  url?: string
+  url?: string;
 }
