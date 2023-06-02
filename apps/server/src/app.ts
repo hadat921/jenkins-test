@@ -5,7 +5,7 @@ import { IRoutes } from "./interfaces/routes";
 import cors from "cors";
 import passport from "passport";
 import "./middlewares/auth";
-import errorMiddleware from "./middlewares/error";
+import errorMiddleware from "./utils/error";
 dotenv.config();
 
 const app: Express = express();

@@ -4,9 +4,9 @@ import UserService from "../services/user";
 import { Router } from "express";
 import { routeWrapper } from "../utils/routeWrapper";
 import passport from "passport";
-import { sendJsonResponse } from "../utils/responseJson";
 import { UserQueryDto } from "../dtos/user";
 import { plainToClass } from "class-transformer";
+import { makeJWT } from "../utils/makeJWT";
 export default class UserRoutes implements IRoutes {
   public path = "/user";
   public router: Router = Router();
@@ -32,7 +32,7 @@ export default class UserRoutes implements IRoutes {
         const userSignInfo = await this.UserService.findUserByUserData(
           userData
         );
-        const token = this.UserService.makeJWT(userSignInfo);
+        const token = makeJWT(userSignInfo);
         const data = { token: token, userSignInfo: userSignInfo };
         return { message: "Successfully logged in", data };
       })
